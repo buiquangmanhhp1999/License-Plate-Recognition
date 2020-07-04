@@ -7,7 +7,7 @@ Phương pháp mình giới thiệu lần này bao gồm 4 bước: <br>
 * Định dạng lại biển số xe xác định biển số xe gồm một hay hai dòng.
 
 ## Quick start
-Các bạn có thể clone repo này về và chạy ngay bằng câu lệnh dưới đây. Sau đó thay thế link_to_image bằng đường dẫn tới ảnh muốn đọc
+Các bạn có thể clone repo này về và chạy ngay bằng câu lệnh dưới đây. Trước đó b thay thế link_to_image bằng đường dẫn tới ảnh muốn đọc
 ```
 python example.py --image_path=link_to_image 
 ```
