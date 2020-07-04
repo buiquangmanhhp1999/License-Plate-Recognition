@@ -8,14 +8,12 @@ import time
 def get_arguments():
     arg = argparse.ArgumentParser()
     arg.add_argument('-i', '--image_path', help='link to image', default='./images/1.jpg')
-    arg.add_argument('-d', '--display_img', help='display img or not', default=1)
 
     return arg.parse_args()
 
 
 args = get_arguments()
 img_path = Path(args.image_path)
-display = args.display_img
 
 # read image
 img = cv2.imread(str(img_path))
