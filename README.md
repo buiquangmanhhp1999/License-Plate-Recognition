@@ -6,21 +6,18 @@ Phương pháp mình giới thiệu lần này bao gồm 4 bước: <br>
 * Xây dựng một model CNN để phân loại các kí tự(characters classification)
 * Định dạng lại biển số xe xác định biển số xe gồm một hay hai dòng.
 
+## Install environments
+```
+pip install -r requirements.txt
+```
+
 ## Quick start
 Các bạn có thể clone repo này về và chạy ngay bằng câu lệnh dưới đây. Trước đó b thay thế link_to_image bằng đường dẫn tới ảnh muốn đọc
 ```
-python example.py --image_path=link_to_image 
+python main.py --image_path=link_to_image 
 ```
 
-## Dependencies
-* python 3.7+
-* keras
-* numpy
-* opencv3.x
-* scikit-image
-* imutils
-
- ## Kết quả
+## Kết quả
    Project nhận diện biển số xe này của mình có thể hoạt động trên cả biển một dòng hoặc hai dòng. Thậm chí đôi khi biển số xe bị che khuất một chút vẫn đọc được. :sunglasses:
    <p align="center" >
    <img src="https://images.viblo.asia/877154c3-929f-431c-a728-4a994acf6869.png" >
