@@ -3,22 +3,30 @@ import numpy as np
 from skimage import measure
 from imutils import perspective
 import imutils
-from data_utils import order_points, convert2Square, draw_labels_and_boxes
-from detect import detectNumberPlate
-from model import CNN_Model
+
+from src.data_utils import order_points, convert2Square, draw_labels_and_boxes
+from src.lp_detection.detect import detectNumberPlate
+from src.char_classification.model import CNN_Model
 from skimage.filters import threshold_local
 
 ALPHA_DICT = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'K', 9: 'L', 10: 'M', 11: 'N', 12: 'P',
               13: 'R', 14: 'S', 15: 'T', 16: 'U', 17: 'V', 18: 'X', 19: 'Y', 20: 'Z', 21: '0', 22: '1', 23: '2', 24: '3',
               25: '4', 26: '5', 27: '6', 28: '7', 29: '8', 30: '9', 31: "Background"}
 
+LP_DETECTION_CFG = {
+    "weight_path": "./src/weights/yolov3-tiny_15000.weights",
+    "classes_path": "./src/lp_detection/cfg/yolo.names",
+    "config_path": "./src/lp_detection/cfg/yolov3-tiny.cfg"
+}
+
+CHAR_CLASSIFICATION_WEIGHTS = './src/weights/weight.h5'
 
 class E2E(object):
     def __init__(self):
         self.image = np.empty((28, 28, 1))
-        self.detectLP = detectNumberPlate()
+        self.detectLP = detectNumberPlate(LP_DETECTION_CFG['classes_path'], LP_DETECTION_CFG['config_path'], LP_DETECTION_CFG['weight_path'])
         self.recogChar = CNN_Model(trainable=False).model
-        self.recogChar.load_weights('./weights/weight.h5')
+        self.recogChar.load_weights(CHAR_CLASSIFICATION_WEIGHTS)
         self.candidates = []
 
     def extractLP(self):
@@ -41,7 +49,7 @@ class E2E(object):
 
             # crop number plate used by bird's eyes view transformation
             LpRegion = perspective.four_point_transform(self.image, pts)
-            # cv2.imwrite('step1.png', LpRegion)
+           
             # segmentation
             self.segmentation(LpRegion)
 
@@ -54,7 +62,6 @@ class E2E(object):
             # draw labels
             self.image = draw_labels_and_boxes(self.image, license_plate, coordinate)
 
-        # cv2.imwrite('example.png', self.image)
         return self.image
 
     def segmentation(self, LpRegion):
@@ -64,10 +71,9 @@ class E2E(object):
         # adaptive threshold
         T = threshold_local(V, 15, offset=10, method="gaussian")
         thresh = (V > T).astype("uint8") * 255
-        cv2.imwrite("step2_1.png", thresh)
+
         # convert black pixel of digits to white pixel
         thresh = cv2.bitwise_not(thresh)
-        cv2.imwrite("step2_2.png", thresh)
         thresh = imutils.resize(thresh, width=400)
         thresh = cv2.medianBlur(thresh, 5)
 
@@ -85,7 +91,7 @@ class E2E(object):
             mask[labels == label] = 255
 
             # find contours from mask
-            contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            _, contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
             if len(contours) > 0:
                 contour = max(contours, key=cv2.contourArea)
@@ -101,7 +107,6 @@ class E2E(object):
                     candidate = np.array(mask[y:y + h, x:x + w])
                     square_candidate = convert2Square(candidate)
                     square_candidate = cv2.resize(square_candidate, (28, 28), cv2.INTER_AREA)
-                    # cv2.imwrite('./characters/' + str(y) + "_" + str(x) + ".png", cv2.resize(square_candidate, (56, 56), cv2.INTER_AREA))
                     square_candidate = square_candidate.reshape((28, 28, 1))
                     self.candidates.append((square_candidate, (y, x)))
 

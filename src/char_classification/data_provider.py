@@ -1,6 +1,7 @@
-import keras
+import tensorflow.keras as keras
 import numpy as np
-import data_utils
+
+from src import data_utils
 
 
 class Datasets(object):

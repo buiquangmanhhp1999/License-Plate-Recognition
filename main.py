@@ -1,13 +1,15 @@
-from recognition import E2E
 import cv2
 from pathlib import Path
 import argparse
 import time
 
+from src.lp_recognition import E2E
+
+
 
 def get_arguments():
     arg = argparse.ArgumentParser()
-    arg.add_argument('-i', '--image_path', help='link to image', default='./images/1.jpg')
+    arg.add_argument('-i', '--image_path', help='link to image', default='./samples/1.jpg')
 
     return arg.parse_args()
 

@@ -1,12 +1,11 @@
-import keras
 import numpy as np
+from tensorflow.keras import optimizers
+from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
+from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
+from tensorflow.keras.models import Sequential
 
-import config
-from data_provider import Datasets
-from keras import optimizers
-from keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
-from keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
-from keras.models import Sequential
+from src.char_classification import config
+from src.char_classification.data_provider import Datasets
 
 
 ALPHA_DICT = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'K', 9: 'L', 10: 'M', 11: 'N', 12: 'P',

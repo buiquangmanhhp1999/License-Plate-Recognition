@@ -1,14 +1,13 @@
-import data_utils as utils
+import src.data_utils as utils
 import cv2
 import numpy as np
 
 
 class detectNumberPlate(object):
-    def __init__(self, threshold=0.5):
-        args = utils.get_arguments()
-        self.weight_path = args.weight_path
-        self.cfg_path = args.config_path
-        self.labels = utils.get_labels(args.classes_path)
+    def __init__(self, classes_path, config_path, weight_path, threshold=0.5):
+        self.weight_path = weight_path
+        self.cfg_path = config_path
+        self.labels = utils.get_labels(classes_path)
         self.threshold = threshold
 
         # Load model
