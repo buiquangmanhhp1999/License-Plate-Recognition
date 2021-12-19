@@ -1,4 +1,4 @@
-opencv-contrib-python==3.4.2.17
+opencv-contrib-python>=4.2.0.32
 numpy==1.21.2
 tensorflow
 imutils==0.5.4
