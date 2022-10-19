@@ -2,6 +2,7 @@ import cv2
 from pathlib import Path
 import argparse
 import time
+from PIL import Image
 
 from src.lp_recognition import E2E
 
@@ -36,6 +37,14 @@ print('Model process on %.2f s' % (end - start))
 
 # show image
 cv2.imshow('License Plate', image)
+
+# save result
+# Author: HuyPham 15/9/2022
+# https://stackoverflow.com/questions/902761/saving-a-numpy-array-as-an-image
+im = Image.fromarray(image)
+im.save("result.jpeg")
+#end
+
 if cv2.waitKey(0) & 0xFF == ord('q'):
     exit(0)
 

@@ -91,7 +91,9 @@ class E2E(object):
             mask[labels == label] = 255
 
             # find contours from mask
-            _, contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            # _, contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            # https://github.com/facebookresearch/maskrcnn-benchmark/issues/339
+            contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
             if len(contours) > 0:
                 contour = max(contours, key=cv2.contourArea)
@@ -109,14 +111,13 @@ class E2E(object):
                     square_candidate = cv2.resize(square_candidate, (28, 28), cv2.INTER_AREA)
                     square_candidate = square_candidate.reshape((28, 28, 1))
                     self.candidates.append((square_candidate, (y, x)))
-
     def recognizeChar(self):
         characters = []
         coordinates = []
-
         for char, coordinate in self.candidates:
             characters.append(char)
             coordinates.append(coordinate)
+
 
         characters = np.array(characters)
         result = self.recogChar.predict_on_batch(characters)

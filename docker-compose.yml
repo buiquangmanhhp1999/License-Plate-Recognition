@@ -1,0 +1,16 @@
+version: '3'
+services:
+    anpr:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      image: python
+      container_name: anpr
+      restart: unless-stopped
+      tty: true
+      environment:
+          SERVICE_NAME: app
+          SERVICE_TAGS: dev
+      working_dir: /user/src/app
+      volumes:
+        - ./:/user/src/app
