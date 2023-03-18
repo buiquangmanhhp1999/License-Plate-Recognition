@@ -53,7 +53,8 @@ class detectNumberPlate(object):
 
         coordinates = []
         for i in indices:
-            index = i[0]
+            #index = i[0]
+            index = i
             x_min, y_min, width, height = boxes[index]
             x_min = round(x_min)
             y_min = round(y_min)
